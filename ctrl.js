@@ -37,6 +37,10 @@ module.controller("Ctrl", ["$scope", "$mdDialog", "Serv", function($scope, $mdDi
             
             Serv.findAllClientes().then(function(res) {
                 $scope.clientes = res.data;
+            }, function(error) {
+                console.log(error);
+            }, function(value) {
+                console.log(value);
             });
             
         }
