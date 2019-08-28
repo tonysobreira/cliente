@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -15,38 +15,121 @@
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
 
 </head>
-<body ng-app="App" ng-controller="Ctrl" ng-cloak="" class="buttondemoBasicUsage">
+<body ng-app="App" ng-controller="Ctrl" ng-cloak="" class="buttondemoBasicUsage" id="myApp">
 
-  <div ng-controller="Ctrl" ng-cloak="" class="buttondemoBasicUsage" ng-app="App">
-    <md-content>
-  
-      <md-list flex>
+    <div layout="column" ng-cloak class="md-inline-form">
 
-        <md-subheader class="md-no-sticky">3 line item (with hover)</md-subheader>
+      <md-content layout-padding>
+        <div>
+          <form ng-submit="saveCliente()" name="userForm">
 
-        <md-list-item class="md-3-line" ng-repeat="cliente in clientes" ng-click="null">
-         
+            <div layout-gt-xs="row">
+              <md-input-container class="md-block" flex-gt-sm>
+                <label>Nome</label>
+                <input ng-model="cliente.nome">
+              </md-input-container>
+        
+              <md-input-container class="md-block" flex-gt-sm>
+                <label>Email</label>
+                <input ng-model="cliente.email" type="email">
+              </md-input-container>
+            </div>
+    
+            <div layout-gt-xs="row">
+              <md-input-container class="md-block" flex-gt-sm>
+                <label>CPF</label>
+                <input ng-model="cliente.cpf">
+              </md-input-container>
+    
+              <md-input-container class="md-block" flex-gt-sm>
+                <label>Data de Nascimento</label>
+                <md-datepicker ng-model="cliente.dataNascimento" placeholder="Some Date"></md-datepicker>
+              </md-input-container>
+            </div>
+    
+            <div layout-gt-sm="row">
+              <md-input-container class="md-block" flex-gt-sm>
+                <label>Telefone</label>
+                <input ng-model="cliente.telefone">
+              </md-input-container>
+            </div>
+    
+            <div layout-gt-xs="row">
+              <md-input-container class="md-block" flex-gt-sm>
+                <label>Endereço</label>
+                <input ng-model="cliente.endereco">
+              </md-input-container>
 
-          <div class="md-list-item-text" layout="column">
-            <h3>{{ cliente.id }}</h3>
-            <h4>{{ cliente.nome }}</h4>
-            <p>{{ cliente.email }}</p>
-          </div>
-        </md-list-item>
+              <md-input-container class="md-block" flex-gt-sm>
+                <label>Complemento</label>
+                <input ng-model="cliente.complemento">
+              </md-input-container>
+            </div>
 
-      </md-list>
-      
-    </md-content>
+            <div layout-gt-xs="row">
+              <md-input-container class="md-block" flex-gt-sm>
+                <label>Bairro</label>
+                <input ng-model="cliente.bairro">
+              </md-input-container>
+            </div>
+
+            <div layout-gt-sm="row">
+              <md-input-container class="md-block" flex-gt-sm>
+                <label>Estado</label>
+                <input ng-model="cliente.estado">
+              </md-input-container>
+
+              <md-input-container class="md-block" flex-gt-sm>
+                <label>Cidade</label>
+                <input ng-model="cliente.cidade">
+              </md-input-container>
+    
+              <md-input-container class="md-block" flex-gt-sm>
+                <label>CEP</label>
+                <input ng-model="cliente.cep">
+              </md-input-container>
+            </div>
+
+            <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
+              <md-button type="submit" class="md-raised">Salvar</md-button>
+              <md-button ng-click="reset()" class="md-raised">Reset</md-button>
+            </section>
+    
+          </form>
+        </div>
+      </md-content>
+
+      <md-content layout-padding>
+        <md-list flex>
+
+          <md-subheader class="md-no-sticky">Clientes</md-subheader>
+
+          <md-list-item class="md-3-line" ng-repeat="cliente in clientes" ng-click="openDialog($event, cliente)">
+            <div class="md-list-item-text" layout="column">
+              <h1>{{ cliente.nome }}</h1>
+              <p>{{ cliente.email }}</p>
+            </div>
+            <md-button ng-click="editCliente(cliente)" class="md-raised">Editar</md-button>
+            <md-button ng-click="deleteCliente(cliente)" class="md-raised">Deletar</md-button>
+          </md-list-item>
+
+        </md-list>
+        
+      </md-content>
+
   </div>
 
 <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.7.7/angular.js'></script>
 <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.7.7/angular-animate.min.js'></script>
-<script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.7.7/angular-route.min.js'></script>
 <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.7.7/angular-aria.min.js'></script>
-<script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.7.7/angular-messages.min.js'></script>
-<script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/moment.js'></script>
-<script src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/t-114/svg-assets-cache.js'></script>
 <script src='https://gitcdn.xyz/cdn/angular/bower-material/v1.1.20/angular-material.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/moment.js'></script>
+
+<script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.7.7/angular-route.min.js'></script>
+<script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.7.7/angular-messages.min.js'></script>
+<script src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/t-114/svg-assets-cache.js'></script>
+
+
 <script  src="./app.js"></script>
 <script  src="./ctrl.js"></script>
 <script  src="./serv.js"></script>

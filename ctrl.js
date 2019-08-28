@@ -2,91 +2,113 @@
 
 var module = angular.module('app.ctrl', []);
 
-module.controller("Ctrl", ["$scope", "Serv", function($scope, Serv) {
+module.controller("Ctrl", ["$scope", "$mdDialog", "Serv", function($scope, $mdDialog, Serv) {
     
-        $scope.all = [];
         $scope.clientes = [];
 
-        $scope.data = {
+        $scope.cliente = {
             id: null,
-            name: null,
+            nome: null,
+            cpf: null,
+            dataNascimento: null,
+            telefone: null,
             email: null,
-            password: null
+            endereco: null,
+            cep: null,
+            bairro: null,
+            complemento: null,
+            cidade: null,
+            estado: null
         };
 
-        _findAll();
-                
-        function _findAll() {
-            
-            Serv.findAll().then(function(res) {
-                $scope.all = res.data; // success
-            }, function(reason) {
-                console.log("error occured"); // error
-            }, function(value) {
-                console.log("no callback");
-            });
-            
-        }
-        
-        $scope.save = function() {
+        $scope.saveCliente = function() {
 
-            if ($scope.data.id == null) {
-                Serv.save($scope.data).then(_success, _error);
+            if ($scope.cliente.id == null) {
+                Serv.saveCliente($scope.cliente).then(_sucesso, _erro);
             } else {
-                Serv.update($scope.data).then(_success, _error);
+                Serv.updateCliente($scope.cliente.id, $scope.cliente).then(_sucesso, _erro);
             }
-            
-        };
 
-        $scope.delete = function(data) {
-            Serv.delete(data).then(_success, _error);
-        };
-
-        function _success(res) {
-            _findAll();
-            _clearData();
-        }
-        
-        function _error(res) {
-            var data = res.data;
-            var status = res.status;
-            var header = res.header;
-            var config = res.config;
-            console.log("Error: " + status + ":" + data);
-            console.log("Status: " + status + ", Header: " + header + ", Config:" + config );
-        }
-
-        function _clearData() {
-            $scope.data.id = null;
-            $scope.data.name = "";
-            $scope.data.email = "";
-            $scope.data.password = "";
-        }
-
-        $scope.edit = function(data) {
-            $scope.data.id = data.id;
-            $scope.data.name = data.name;
-            $scope.data.email = data.email;
-            $scope.data.password = data.password;
-        };
-
-        $scope.reset = function() {
-            _clearData();
         }
 
         _findAllClients();
                 
         function _findAllClients() {
             
-            Serv.findAllClients().then(function(res) {
-                console.log(res.data);
+            Serv.findAllClientes().then(function(res) {
                 $scope.clientes = res.data;
-            }, function(reason) {
-                console.log("error occured"); // error
-            }, function(value) {
-                console.log("no callback");
             });
             
+        }
+
+        function _sucesso(res) {
+            _findAllClients();
+            _clearCliente();
+        }
+
+        function _clearCliente() {
+            $scope.cliente.id = null;
+            $scope.cliente.nome = null;
+            $scope.cliente.cpf = null;
+            $scope.cliente.dataNascimento = null;
+            $scope.cliente.telefone = null;
+            $scope.cliente.email = null;
+            $scope.cliente.endereco = null;
+            $scope.cliente.cep = null;
+            $scope.cliente.bairro = null;
+            $scope.cliente.complemento = null;
+            $scope.cliente.cidade = null;
+            $scope.cliente.estado = null;
+        }
+        
+        function _erro(res) {
+            var data = res.data;
+            var status = res.status;
+            var header = res.header;
+            var config = res.config;
+            console.log("Erro: " + status + ":" + data);
+            console.log("Status: " + status + ", Header: " + header + ", Config:" + config );
+        }
+
+        $scope.deleteCliente = function(cliente) {
+            Serv.deleteCliente(cliente.id).then(_sucesso, _erro);
+        };
+
+        $scope.editCliente = function(cliente) {
+            $scope.cliente = cliente;
+        };
+
+        $scope.reset = function() {
+            _clearCliente();
+            _findAllClients();
+        }
+
+        $scope.openDialog = function(ev, cliente) {
+            //alert(cliente.id);
+
+            $mdDialog.show(
+                $mdDialog.alert()
+                  .parent(angular.element(document.querySelector('#myApp')))
+                  .clickOutsideToClose(true)
+                  .title(cliente.nome)
+                  .textContent(
+                    "Nome: " + cliente.nome + " - " +
+                    " Email: " + cliente.email + " - " +
+                    " CPF: " + cliente.cpf + " - " +
+                    " Data de Nascimento: " + moment(cliente.dataNascimento).format("DD/MM/YYYY") + " - " +
+                    " Telefone: " + cliente.telefone + " - " +
+                    " Endereço: " + cliente.endereco + " - " +
+                    " Complemento: " + cliente.complemento + " - " +
+                    " Bairro: " + cliente.bairro + " - " +
+                    " Estado: " + cliente.estado + " - " +
+                    " Cidade: " + cliente.cidade + " - " +
+                    " CEP: " + cliente.cep
+                  )
+                  .ariaLabel('Cliente Dialog')
+                  .ok('Fechar')
+                  .targetEvent(ev)
+            );
+
         }
         
     }
